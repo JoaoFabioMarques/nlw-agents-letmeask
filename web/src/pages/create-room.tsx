@@ -1,9 +1,13 @@
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { useQuery } from "@tanstack/react-query"
+import { ArrowRight } from "lucide-react"
 import { Link } from "react-router-dom"
 
 type GetRoomsAPIResponse = Array <{
     id: string
     name: string
+    questionsCount: number
+    createdAt: string
 }>
 
 export function CreateRoom(){
@@ -19,13 +23,36 @@ export function CreateRoom(){
     })
 
     return (
-    <div>
-    <div>Create Room</div>
-
-        {isLoading && <p>Carregando...</p>}
-        <div className="flex flex-col gap-1">{data?.map(room => {
-            return <Link key={room.id} to={`/room/${room.id}`}>{room.name}</Link>
-        })}</div>
+    <div className="min-h-screen px-4 py-8">
+        <div className="mx-auto max-w-4xl">
+            <div className="grid grid-cols-2 items-start gap-8">
+                <div/>
+                <Card>
+                    <CardHeader>
+                        <CardTitle>
+                            Salas recentes
+                        </CardTitle>
+                        <CardDescription>
+                            Acesso rápido para as salas criadas recentemente
+                        </CardDescription>
+                    </CardHeader>
+                    <CardContent className="flex flex-col gap-3">
+                        {data?.map(room => {
+                            return <div key = {room.id}
+                                className="flex items-center justify-between rounded-lg border p-3 hover:bg-accent">
+                                <div className="flex-1">
+                                    <h3 className="font-medium">{room.name}</h3>
+                                </div>
+                                <span>
+                                    Entrar
+                                    <ArrowRight />
+                                </span>
+                            </div>
+                        })}
+                    </CardContent>
+                </Card>
+            </div>
+        </div>
     </div>
     )
 }
